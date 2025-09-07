@@ -8,17 +8,17 @@ AG.Workfolio is a modern, responsive portfolio website built with React, TypeScr
 
 ```
 Workfolio/
-├── assets/                    # Static assets (images, icons, etc.)
 ├── content/                   # Content data files
-│   └── site-data.json        # Main content data
+│   └── site-data.json         # Main content data
 ├── src/
-│   ├── components/           # Reusable UI components
-│   │   ├── ui/              # Base UI components (shadcn/ui style)
+│   ├── assets/                # Static assets (images, icons, etc.)
+│   ├── components/            # Reusable UI components
+│   │   ├── ui/                # Base UI components (shadcn/ui style)
 │   │   │   ├── button.tsx
 │   │   │   ├── card.tsx
 │   │   │   ├── input.tsx
 │   │   │   ├── textarea.tsx
-│   │   │   └── heading.tsx  # NEW: Centralized heading components
+│   │   │   └── heading.tsx    # NEW: Centralized heading components
 │   │   ├── Footer.tsx
 │   │   ├── GameCard.tsx
 │   │   ├── Hero3D.tsx
@@ -27,28 +27,38 @@ Workfolio/
 │   │   ├── ProjectSlide.tsx
 │   │   ├── QuestCarousel.tsx
 │   │   └── TypewriterText.tsx
-│   ├── contexts/            # React contexts
-│   │   └── ThemeContext.tsx # Theme management (light/dark mode)
-│   ├── lib/                 # Utility libraries
-│   │   ├── data.ts         # Data fetching and management
-│   │   ├── email.ts        # Email functionality
-│   │   └── utils.ts        # Utility functions
-│   ├── pages/              # Page components
-│   │   ├── Dashboard.tsx   # Main dashboard page
-│   │   ├── Projects.tsx    # Projects showcase
-│   │   ├── Lab.tsx         # Experimental demos
-│   │   ├── Journey.tsx     # Career timeline
-│   │   └── Contact.tsx     # Contact form
-│   ├── types/              # TypeScript type definitions
-│   │   └── site-data.ts    # Content type definitions
-│   ├── App.tsx             # Main app component
-│   ├── main.tsx           # App entry point
-│   └── index.css          # Global styles
-├── index.html              # HTML template
-├── package.json            # Dependencies and scripts
-├── tailwind.config.js      # Tailwind CSS configuration
-├── tsconfig.json           # TypeScript configuration
-└── vite.config.ts          # Vite build configuration
+│   ├── contexts/              # React contexts
+│   │   └── ThemeContext.tsx   # Theme management (light/dark mode)
+│   ├── lib/                   # Utility libraries
+│   │   ├── data.ts            # Data fetching and management
+│   │   ├── email.ts           # Email functionality
+│   │   └── utils.ts           # Utility functions
+│   ├── pages/                 # Page components
+│   │   ├── Contact.tsx        # Contact form
+│   │   ├── Dashboard.tsx      # Main dashboard page
+│   │   ├── Journey.tsx        # Career timeline
+│   │   ├── Lab.tsx            # Experimental demos
+│   │   ├── Projects.tsx       # Projects showcase
+│   │   └── SideMissions.tsx   # Additional side projects/missions
+│   ├── styles/                # Styling helpers
+│   │   └── tw.ts
+│   ├── types/                 # TypeScript type definitions
+│   │   └── site-data.ts       # Content type definitions
+│   ├── App.tsx                # Main app component
+│   ├── index.css              # Global styles
+│   ├── main.tsx               # App entry point
+│   └── vite-env.d.ts          # Vite type declarations
+├── index.html                 # HTML template
+├── package.json               # Dependencies and scripts
+├── package-lock.json
+├── postcss.config.js          # PostCSS configuration
+├── tailwind.config.js         # Tailwind CSS configuration
+├── tsconfig.json              # TypeScript configuration
+├── tsconfig.node.json         # TS config for tooling
+├── vite.config.ts             # Vite build configuration
+├── README.md
+├── setup.md
+└── PROJECT_STRUCTURE.md
 ```
 
 ## 🛠️ Libraries & Technologies
@@ -81,10 +91,11 @@ Workfolio/
 - **Three.js 0.158.0** - 3D graphics library
 - **@react-three/fiber 8.15.12** - React renderer for Three.js
 - **@react-three/drei 9.88.13** - Useful helpers for React Three Fiber
+- **@lottiefiles/dotlottie-react 0.15.2** - Lightweight .lottie animation player
 
 ### Routing
 
-- **React Router DOM 6.20.1** - Client-side routing
+- **React Router DOM 6.30.1** - Client-side routing
   - **Why**: Declarative routing, nested routes, navigation state
 
 ### Utilities
