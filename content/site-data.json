@@ -1,0 +1,133 @@
+{
+  "hero": {
+    "name": "Ayesha Ghani",
+    "tagline": "Software Engineer | Full Stack | AI-driven CX",
+    "oneLiner": "I craft scalable backends, intuitive frontends, and AI-powered customer experiences.",
+    "frontImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop&crop=face",
+    "backImage": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop"
+  },
+  "majorProjects": [
+    {
+      "id": "workfolio",
+      "title": "Workfolio (This Portfolio)",
+      "company": "",
+      "problem": "Needed a fast, modern, and easily extensible personal site.",
+      "approach": "Built with React + TypeScript, Tailwind and Framer Motion; modular data in JSON; centralized Tailwind tokens in tw.ts; Vite for blazing-fast DX.",
+      "outcome": "Responsive portfolio with animated hero, projects, side missions (GitHub API), and reusable UI primitives.",
+      "media": { "demo": "" },
+      "technologies": ["React", "TypeScript", "Tailwind", "Framer Motion", "Vite"],
+      "imageKey": "workfolio",
+      "description": "My personal portfolio showcasing major projects, side missions, and contact info. Focuses on performance, clean structure, and delightful micro‑interactions.",
+      "tags": ["react", "typescript", "tailwind", "framer-motion", "vite", "portfolio"],
+      "liveUrl": "",
+      "githubUrl": "https://github.com/ayesha-ghani098/workfolio"
+    },
+    {
+      "id": "prepmentor",
+      "title": "Prep Mentor AI",
+      "company": "",
+      "problem": "Interview prep needs tailored practice and feedback.",
+      "approach": "Personalized question sets, real-time AI feedback, analytics.",
+      "outcome": "Improved user performance and tracked progress.",
+      "media": { "demo": "https://prepmentor.up.railway.app/" },
+      "technologies": ["React", "TypeScript", "Tailwind", "MUI", "JWT", "Vite", "Java", "Spring Boot", "MySQL"],
+      "imageKey": "prepmentor",
+      "description": "An AI-powered interview preparation platform that helps users practice and improve through personalized question sets, real-time feedback, and progress tracking. Includes authentication, analytics dashboard, question management, and multi-format responses.",
+      "tags": ["interview-prep", "ai-feedback", "react-typescript", "tailwind-css", "material-ui", "authentication", "java", "springboot", "jwt", "vite", "mysql"],
+      "liveUrl": "https://prepmentor.up.railway.app/",
+      "githubUrl": "https://github.com/ayesha-ghani098/prepmentor-ai"
+    },
+    {
+      "id": "wavetec-queuing",
+      "title": "WhatsApp Virtual Queuing Ticketing & Appointment System",
+      "company": "Wavetec",
+      "problem": "Long queues & manual bookings hurt CX.",
+      "approach": "Java Spring Boot microservices (JWT), RabbitMQ for async, React dashboards, WhatsApp eForms replacing traditional forms.",
+      "outcome": "Fewer manual errors, faster booking, better CX.",
+      "media": { "demo": "" },
+      "technologies": ["Java", "SpringBoot", "RabbitMQ", "Hibernate", "JPA", "JWT", "React"],
+      "imageKey": "whatsapp",
+      "description": "A unified customer interaction system using WhatsApp as the primary channel to manage tickets, virtual queues, and appointments with real-time notifications and status tracking.",
+      "tags": ["WhatsApp", "ticketing", "virtual queuing", "appointment", "scheduling", "chat-based", "omnichannel", "real-time", "customer support"],
+      "liveUrl": ""
+    },
+    {
+      "id": "ai-whatsapp-bot",
+      "title": "AI Powered WhatsApp Chatbot",
+      "company": "Wavetec",
+      "problem": "High-volume queries overwhelm agents.",
+      "approach": "LLM-based assistants, routing and handoff, analytics; OpenAI + LangChain.",
+      "outcome": "Consistent brand voice and scalable support across enterprise clients.",
+      "media": { "demo": "" },
+      "technologies": ["AI", "WhatsApp", "OpenAI", "Assistants", "LangChain", "Java", "Spring Boot", "JWT"],
+      "imageKey": "whatsapp",
+      "description": "An AI-driven WhatsApp chatbot enabling natural conversations, contextual responses, and proactive assistance with routing and analytics.",
+      "tags": ["AI", "WhatsApp", "Chatbot", "Conversational AI", "enterprise", "routing", "handoff", "analytics"],
+      "liveUrl": ""
+    },
+    {
+      "id": "chaincard",
+      "title": "Chaincard",
+      "company": "",
+      "problem": "Artists and collectors need easy NFT creation and discovery.",
+      "approach": "Wallet-based auth with WalletConnect, Binance and Coinbase integrations.",
+      "outcome": "Seamless onboarding and cross-wallet interactions.",
+      "media": { "demo": "https://chaincards.netlify.app/" },
+      "technologies": ["React", "AntDesign", "ReactRouterDom", "HTML", "CSS", "NFT"],
+      "imageKey": "chaincard",
+      "description": "An artist- and collector-focused NFT platform enabling creation, discovery, and trading of digital art with wallet-based authentication.",
+      "tags": ["React", "AntDesign", "ReactRouterDom", "NFT", "WalletConnect", "BinanceWallet", "CoinbaseWallet", "CrossWallet"],
+      "liveUrl": "https://chaincards.netlify.app/"
+    },
+    {
+      "id": "kpibar-platform",
+      "title": "Kpibar Productivity Platform",
+      "company": "Kpibar",
+      "problem": "Teams juggle tasks across tools.",
+      "approach": "Integrates Asana, GitHub, Zeplin; RxDB and Redux for real-time/offline.",
+      "outcome": "Single dashboard with actionable items to deliver faster.",
+      "media": { "demo": "https://kpibar.up.railway.app/" },
+      "technologies": ["React", "Redux", "RxDB", "HTML", "CSS", "Ant Design"],
+      "imageKey": "kpibar",
+      "description": "Kpibar integrates popular tools like Asana, GitHub, and Zeplin to centralize tasks, issues, and design assets—enabling teams to plan, track, and deliver faster.",
+      "tags": ["React", "Redux", "RxDB", "dashboard", "integration", "real-time", "offline-first"],
+      "liveUrl": "https://kpibar.up.railway.app/"
+    }
+  ],
+  "sideMissions": [
+    { "id": "google-keep-clone", "title": "Google Keep Clone", "description": "MERN stack notes CRUD + color themes", "technologies": ["MongoDB", "Express", "React", "Node.js"] },
+    { "id": "health-dashboard", "title": "Health Dashboard UI", "description": "Data visualization + clean components", "technologies": ["React", "D3.js", "Tailwind"] },
+    { "id": "myread-app", "title": "MyRead App", "description": "Book categorization + search functionality", "technologies": ["React", "JavaScript", "CSS"] }
+  ],
+  "journey": [
+    { "id": "wavetec-current", "company": "Wavetec", "position": "Software Engineer", "duration": "May 2023 – Present", "location": "Karachi, Hybrid", "description": "Backend: Java 8/17, Spring Boot, Spring Security, JWT, multithreading, RabbitMQ. Frontend: React, Redux, Hooks, Tailwind. WhatsApp CX: QR e-tickets, PDF/image delivery, dynamic eForms, feedback systems. AI: OpenAI, LangChain, custom LLM assistants. Security: Encrypted, prefilled transactional eForms for banking (cash deposits, account opening). DevOps: GitLab CI/CD, Swagger APIs.", "media": { "demo": "[DEMO]", "image": "[IMAGE: dashboard/flow diagram]" }, "technologies": ["Java", "Spring Boot", "Spring Security", "JWT", "RabbitMQ", "React", "Redux", "Tailwind", "OpenAI", "LangChain", "GitLab CI/CD", "Swagger"] },
+    { "id": "kpibar", "company": "Kpibar", "position": "Frontend Developer", "duration": "Oct 2021 – May 2023", "location": "Remote", "description": "React, Redux, RxDB; Tailwind, DaisyUI, AntD, SASS; Swagger integrations.", "media": { "image": "[IMAGE: product UI screenshot]" }, "technologies": ["React", "Redux", "RxDB", "Tailwind", "DaisyUI", "Ant Design", "SASS", "Swagger"] },
+    { "id": "folio3", "company": "Folio3", "position": "Web Dev Trainee", "duration": "Feb 2022 – Jun 2022", "location": "Remote", "description": "MERN, React, Node, .NET Core; patterns & clean code; Mongo + SQL.", "media": { "image": "[IMAGE: repo/code preview]" }, "technologies": ["MERN", "React", "Node.js", ".NET Core", "MongoDB", "SQL"] },
+    { "id": "xord", "company": "Xord", "position": "MERN Intern", "duration": "Oct 2021 – Feb 2022", "location": "On-site", "description": "Real-time React apps, reusable components, responsive features.", "media": { "image": "[IMAGE: app interface]" }, "technologies": ["React", "Node.js", "MongoDB", "Express"] },
+    { "id": "hashpotato", "company": "HashPotato", "position": "React Native Intern", "duration": "Feb 2021 – Apr 2021", "location": "Hybrid", "description": "RN + Expo; reusable components; polished responsive interfaces.", "media": { "image": "[IMAGE: mobile mockup]" }, "technologies": ["React Native", "Expo"] }
+  ],
+  "skills": [
+    "Java", "Spring Boot", "Spring Security", "JWT", "RabbitMQ", "Swagger", 
+    "React", "Redux", "Hooks", "Tailwind", "RxDB", "OpenAI", "LangChain", 
+    "GitLab CI/CD", "WhatsApp integrations", ".NET basics"
+  ],
+  "contact": {
+    "name": "Ayesha Ghani",
+    "email": "ayesha.ghani.ga@gmail.com",
+    "topmateUrl": "https://topmate.io/ayesha_ghani/",
+    "github": "https://github.com/ayesha-ghani098",
+    "linkedin": "https://www.linkedin.com/in/ayeshaghani098/",
+    "phonePrimary": "+923121228830",
+    "phoneSecondary": "+923363407008",
+    "discordId": "808414142192549899",
+    "discordUsername": "ayesha2483",
+    "threads": "ayeshgh_",
+    "instagram": "ayeshgh_",
+    "facebook": "https://www.facebook.com/ayeshaghanich"
+  },
+  "config": {
+    "siteName": "Ayesha Ghani Portfolio",
+    "siteUrl": "https://ayesha-ghani.dev",
+    "description": "Software Engineer specializing in scalable backends, intuitive frontends, and AI-powered customer experiences."
+  }
+} 
