@@ -12,7 +12,7 @@ import { tw } from "@/styles/tw";
 import prepmentorImg from "@/assets/prepmentor.png";
 import chaincardImg from "@/assets/chaincard.png";
 import kpibarImg from "@/assets/kpibar.png";
-import whatsappImg from "@/assets/WhatsApp.png";
+import whatsappImg from "@/assets/whatsapp.png";
 import workfolioImg from "@/assets/workfolio.png";
 
 const imageMap: Record<string, string> = {
