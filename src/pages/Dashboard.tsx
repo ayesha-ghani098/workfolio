@@ -107,11 +107,11 @@ export default function Dashboard() {
       <div className={`${tw.container} ${tw.section} relative z-10`}>
         {/* Hero Section - new layout */}
         <motion.section variants={itemVariants} className="mb-16">
-          <div className={`${tw.grid2} items-start`}>
+          <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-12">
             {/* Left - Headline & CTA */}
             <motion.div
               variants={itemVariants}
-              className={`${tw.heroGap} order-2 lg:order-1 lg:pr-8 text-center lg:text-left items-center`}
+              className={`${tw.heroGap} order-2 lg:order-1 lg:pr-8 text-center lg:text-left items-center flex-1 max-w-2xl`}
             >
               <div className={`${tw.badge} text-primary`}>
                 <span className="w-2 h-2 rounded-full bg-system-green" />
@@ -124,7 +124,7 @@ export default function Dashboard() {
                 <br />
                 Engineer
               </h1>
-              <p className="text-lg text-muted-foreground max-w-xl">
+              <p className="text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0">
                 {hero.oneLiner}
               </p>
               <div className="flex flex-wrap gap-3 pt-2 justify-center lg:justify-start">
@@ -146,9 +146,9 @@ export default function Dashboard() {
             {/* Right - Showcase cards with profile image */}
             <motion.div
               variants={itemVariants}
-              className="order-1 lg:order-2 w-full"
+              className="order-1 lg:order-2 w-full lg:w-auto flex-1 max-w-xl"
             >
-              <div className="flex flex-row items-center justify-center sm:justify-start sm:items-start gap-4 sm:gap-6">
+              <div className="flex flex-row items-center justify-center lg:justify-end sm:items-start gap-4 sm:gap-6">
                 {/* Left mini card */}
                 <div className="glass rounded-2xl p-0 w-40 h-40 sm:w-48 sm:h-48 md:w-60 md:h-60 overflow-hidden">
                   <img
@@ -168,7 +168,7 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="mt-4 flex flex-col sm:flex-row items-stretch gap-4 sm:gap-6">
+              <div className="mt-4 flex flex-col sm:flex-row items-stretch gap-4 sm:gap-6 lg:justify-end">
                 {/* Left gradient info box */}
                 <div className="sm:w-80 md:w-80 w-auto rounded-xl p-4 bg-primary text-primary-foreground mx-auto sm:mx-0">
                   <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm md:text-base font-heading">

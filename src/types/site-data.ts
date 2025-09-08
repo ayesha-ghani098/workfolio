@@ -2,8 +2,6 @@ export interface Hero {
   name: string;
   tagline: string;
   oneLiner: string;
-  frontImage: string;
-  backImage: string;
 }
 
 export interface Media {
@@ -61,6 +59,7 @@ export interface Contact {
   threads?: string; // handle, with or without leading @
   instagram?: string; // handle or full URL
   facebook?: string; // full URL
+  cvUrl?: string; // URL to downloadable CV/resume (PDF)
 }
 
 export interface Config {
