@@ -1,9 +1,6 @@
-import { motion } from "framer-motion";
 import { Mail, Zap } from "lucide-react";
 import { getContact } from "@/lib/data";
 import { tw } from "@/styles/tw";
-
-const item = { hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } };
 
 export default function Statement() {
   const contact = getContact();
