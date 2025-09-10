@@ -16,84 +16,68 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      <motion.div variants={item} className="mb-8">
-        <img
-          src={userPic}
-          alt="Ayesha Ghani"
-          className="w-24 h-24 rounded-full mx-auto mb-6 border-2 border-primary/20"
-        />
-        <h1 className="text-4xl md:text-6xl font-display font-bold text-black dark:text-foreground mb-4">
-          Ayesha Ghani
+      <motion.div variants={item} className="relative mx-auto max-w-5xl px-2">
+        {/* Badges */}
+        <div className="absolute -top-8 left-0 inline-flex items-center gap-2 px-2.5 py-1 rounded-full border border-primary/30 bg-primary/10 text-sm sm:text-base">
+          <img
+            src={userPic}
+            alt="Ayesha"
+            className="w-4 h-4 sm:w-5 sm:h-5 rounded-full object-cover"
+          />
+          Hello, I'm Ayesha
+        </div>
+        <Link
+          to="/contact"
+          className="absolute top-6 right-0 inline-flex items-center gap-2 px-2.5 py-1 rounded-full border border-primary/30 bg-primary/10 text-sm sm:text-base"
+        >
+          Let's Connect
+        </Link>
+        <span className="cursor-float cursor-purple left-[-30px] top-[-24px]">
+          <MousePointer2 className="cursor-icon" />
+        </span>
+        <span className="cursor-float cursor-blue right-[-30px] top-[18px]">
+          <MousePointer2 className="cursor-icon" />
+        </span>
+
+        <h1 className="font-display tracking-tight leading-[1.05] text-4xl sm:text-5xl md:text-7xl text-center">
+          <span className="block text-primary">DIGITAL</span>
+          <span className="block text-black dark:text-white">EXPERIENCE</span>
+          <span className="block text-blue-400">DEVELOPER.</span>
         </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-          Full-Stack Developer & UI/UX Designer crafting digital experiences
-          that blend creativity with cutting-edge technology.
-        </p>
       </motion.div>
+
+      <motion.p
+        variants={item}
+        className="mt-4 sm:mt-6 mx-auto max-w-[34rem] px-4 sm:px-0 text-muted-foreground text-base sm:text-lg text-center"
+      >
+        I create a digital experience that borders on efficiency, aesthetics and
+        functionality.
+      </motion.p>
 
       <motion.div
         variants={item}
-        className="flex flex-wrap justify-center gap-4 mb-12"
+        className="mt-5 sm:mt-6 flex items-center justify-center gap-2.5 sm:gap-3"
       >
-        <a
-          href="https://github.com/ayesha-ghani098"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 hover:bg-primary/20 transition-colors"
+        <Link to="/contact" className={tw.cta}>
+          Let's Connect
+        </Link>
+        <Link
+          to="https://github.com/ayesha-ghani098"
+          className={tw.socialBtn}
+          aria-label="GitHub"
         >
-          <Github className="w-4 h-4" />
-          GitHub
-        </a>
-        <a
-          href="https://linkedin.com/in/ayesha-ghani098"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 hover:bg-primary/20 transition-colors"
+          <Github className={tw.socialIcon} />
+        </Link>
+        <Link
+          to="https://www.linkedin.com/in/ayeshaghani098/"
+          className={tw.socialBtn}
+          aria-label="LinkedIn"
         >
-          <Linkedin className="w-4 h-4" />
-          LinkedIn
-        </a>
-        <a
-          href="mailto:ayesha.ghani098@gmail.com"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 hover:bg-primary/20 transition-colors"
-        >
-          <Mail className="w-4 h-4" />
-          Email
-        </a>
-      </motion.div>
-
-      <motion.div variants={item} className="space-y-4">
-        <div className="flex flex-wrap justify-center gap-2 text-sm text-muted-foreground">
-          <span className="px-3 py-1 rounded-full bg-secondary/50">
-            React & Next.js
-          </span>
-          <span className="px-3 py-1 rounded-full bg-secondary/50">
-            TypeScript
-          </span>
-          <span className="px-3 py-1 rounded-full bg-secondary/50">
-            Node.js
-          </span>
-          <span className="px-3 py-1 rounded-full bg-secondary/50">
-            UI/UX Design
-          </span>
-        </div>
-
-        <div className="pt-8">
-          <Link
-            to="/projects"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium"
-          >
-            View My Work
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        <div className="pt-4">
-          <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-            <MousePointer2 className="w-4 h-4" />
-            <span>Scroll to explore</span>
-          </div>
-        </div>
+          <Linkedin className={tw.socialIcon} />
+        </Link>
+        <Link to="/contact" className={tw.socialBtn} aria-label="Email">
+          <Mail className={tw.socialIcon} />
+        </Link>
       </motion.div>
     </section>
   );

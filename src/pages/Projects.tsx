@@ -10,7 +10,7 @@ import ProjectSlide from "@/components/ProjectSlide";
 import { MajorProject } from "@/types/site-data";
 import { tw } from "@/styles/tw";
 import { useGitHubRepos } from "@/hooks/useGitHubRepos";
-import { GITHUB_CONFIG, PAGINATION } from "@/lib/constants";
+import { GITHUB_CONFIG } from "@/lib/constants";
 import prepmentorImg from "@/assets/prepmentor.png";
 import chaincardImg from "@/assets/chaincard.png";
 import kpibarImg from "@/assets/kpibar.png";
@@ -60,7 +60,7 @@ export default function Projects() {
   // Use the GitHub hook
   const { repos, loading: loadingPreview } = useGitHubRepos({
     username: GITHUB_CONFIG.USERNAME,
-    excludeTopics: GITHUB_CONFIG.EXCLUDE_TOPICS,
+    excludeTopics: [...GITHUB_CONFIG.EXCLUDE_TOPICS],
     perPage: GITHUB_CONFIG.PER_PAGE,
   });
 

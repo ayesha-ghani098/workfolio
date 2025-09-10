@@ -1,29 +1,16 @@
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
-import {
-  BookOpen,
-  Code2,
-  ArrowRight,
-  Github,
-  ExternalLink,
-} from "lucide-react";
+import { PageHeader, SectionHeader } from "@/components/ui/heading";
+import { getSideMissions } from "@/lib/data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PageHeader, SectionHeader } from "@/components/ui/heading";
-import { tw } from "@/styles/tw";
+import { ExternalLink, Github } from "lucide-react";
 import { useGitHubRepos } from "@/hooks/useGitHubRepos";
-import { GITHUB_CONFIG } from "@/lib/constants";
-
-const container = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
-};
-
-const item = { hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } };
+import { GITHUB_CONFIG, PAGINATION } from "@/lib/constants";
 
 export default function SideMissions() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 6;
+  const local = getSideMissions();
+  const [page, setPage] = useState(1);
 
   // Use the GitHub hook
   const { repos, loading } = useGitHubRepos({
@@ -37,196 +24,106 @@ export default function SideMissions() {
       return repos.map((r) => ({
         id: String(r.id),
         title: r.name,
-        description: r.description || "No description available",
-        image: "/api/placeholder/400/300",
-        tags: r.topics || [],
+        description: r.description || "",
+        liveUrl: r.homepage ? r.homepage : undefined,
         githubUrl: r.html_url,
-        liveUrl: r.homepage || undefined,
-        stars: r.stargazers_count,
-        language: r.language,
-        updatedAt: r.updated_at,
       }));
     }
-    return [];
-  }, [repos]);
 
-  const totalPages = Math.ceil(items.length / pageSize);
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const currentItems = items.slice(startIndex, endIndex);
+    // Fallback to local side missions
+    return local.map((m) => ({
+      id: m.id,
+      title: m.title,
+      description: m.description,
+      liveUrl: (m as any).liveUrl,
+      githubUrl: (m as any).githubUrl,
+    }));
+  }, [repos, local]);
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  const totalPages = Math.max(
+    1,
+    Math.ceil(items.length / PAGINATION.PAGE_SIZE)
+  );
+  const start = (page - 1) * PAGINATION.PAGE_SIZE;
+  const pageItems = items.slice(start, start + PAGINATION.PAGE_SIZE);
 
   return (
     <motion.div
-      variants={container}
-      initial="hidden"
-      animate="visible"
-      className="min-h-screen bg-background"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20"
     >
-      <PageHeader
-        title="Side Missions"
-        subtitle="Exploring new technologies and building cool stuff"
-      />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-20">
+        <PageHeader
+          title="Side Missions"
+          subtitle="Small projects, experiments, and utilities"
+          icon={<Github className="w-8 h-8 text-primary" />}
+        />
 
-      <div className={`${tw.container} py-12`}>
-        <motion.div variants={item} className="mb-8">
-          <SectionHeader
-            title="GitHub Repositories"
-            subtitle="My open-source contributions and experimental projects"
-            icon={<Github className="w-6 h-6" />}
-          />
-        </motion.div>
+        <SectionHeader title={loading ? "Loading from GitHub…" : "Explore"} />
 
-        {loading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[...Array(6)].map((_, i) => (
-              <Card key={i} className="animate-pulse">
-                <div className="aspect-video bg-muted rounded-t-lg" />
-                <CardHeader>
-                  <div className="h-4 bg-muted rounded w-3/4" />
-                  <div className="h-3 bg-muted rounded w-full mt-2" />
-                  <div className="h-3 bg-muted rounded w-2/3 mt-1" />
-                </CardHeader>
-                <CardContent>
-                  <div className="flex gap-2 mb-4">
-                    <div className="h-6 bg-muted rounded-full w-16" />
-                    <div className="h-6 bg-muted rounded-full w-20" />
-                  </div>
-                  <div className="h-8 bg-muted rounded w-full" />
-                </CardContent>
-              </Card>
-            ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {pageItems.map((item) => (
+            <Card
+              key={item.id}
+              className="h-full glass border-2 hover:border-primary/30 transition"
+            >
+              <CardHeader>
+                <CardTitle className="text-lg font-heading text-primary">
+                  {item.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  {item.description || "No description provided."}
+                </p>
+                <div className="flex gap-2">
+                  {item.liveUrl && (
+                    <Button
+                      asChild
+                      className="flex-1 bg-gradient-to-r from-primary to-primary text-white hover:opacity-90 text-sm"
+                    >
+                      <a href={item.liveUrl} target="_blank" rel="noreferrer">
+                        <ExternalLink className="w-4 h-4 mr-2" /> Live
+                      </a>
+                    </Button>
+                  )}
+                  {item.githubUrl && (
+                    <Button
+                      asChild
+                      className="flex-1 border border-primary/30 text-primary hover:bg-primary/10 bg-transparent text-sm"
+                    >
+                      <a href={item.githubUrl} target="_blank" rel="noreferrer">
+                        <Github className="w-4 h-4 mr-2" /> Code
+                      </a>
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Pagination */}
+        <div className="mt-8 flex items-center justify-center gap-3">
+          <Button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="px-4"
+          >
+            Prev
+          </Button>
+          <div className="text-sm text-muted-foreground">
+            Page {page} / {totalPages}
           </div>
-        ) : (
-          <>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {currentItems.map((project) => (
-                <motion.div key={project.id} variants={item}>
-                  <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-card/50 backdrop-blur-sm">
-                    <div className="aspect-video overflow-hidden rounded-t-lg">
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="text-xl font-heading">
-                        {project.title}
-                      </CardTitle>
-                      <p className="text-muted-foreground text-sm line-clamp-2">
-                        {project.description}
-                      </p>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.tags.slice(0, 3).map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-2 py-1 text-xs rounded-full bg-primary/10 text-primary"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                        {project.tags.length > 3 && (
-                          <span className="px-2 py-1 text-xs rounded-full bg-secondary text-muted-foreground">
-                            +{project.tags.length - 3}
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
-                        <div className="flex items-center gap-4">
-                          {project.language && (
-                            <span className="flex items-center gap-1">
-                              <div className="w-2 h-2 rounded-full bg-primary" />
-                              {project.language}
-                            </span>
-                          )}
-                          <span className="flex items-center gap-1">
-                            <Github className="w-3 h-3" />
-                            {project.stars}
-                          </span>
-                        </div>
-                        <span>
-                          Updated{" "}
-                          {new Date(project.updatedAt).toLocaleDateString()}
-                        </span>
-                      </div>
-
-                      <div className="flex gap-2">
-                        {project.githubUrl && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="flex-1"
-                            onClick={() =>
-                              window.open(project.githubUrl, "_blank")
-                            }
-                          >
-                            <Code2 className="w-4 h-4 mr-2" />
-                            Code
-                          </Button>
-                        )}
-                        {project.liveUrl && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="flex-1"
-                            onClick={() =>
-                              window.open(project.liveUrl, "_blank")
-                            }
-                          >
-                            <ExternalLink className="w-4 h-4 mr-2" />
-                            Live
-                          </Button>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-
-            {totalPages > 1 && (
-              <div className="flex justify-center items-center gap-2 mt-12">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
-                >
-                  Previous
-                </Button>
-
-                {[...Array(totalPages)].map((_, i) => (
-                  <Button
-                    key={i + 1}
-                    variant={currentPage === i + 1 ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => handlePageChange(i + 1)}
-                    className="w-10"
-                  >
-                    {i + 1}
-                  </Button>
-                ))}
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                </Button>
-              </div>
-            )}
-          </>
-        )}
+          <Button
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            className="px-4"
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </motion.div>
   );
