@@ -3,34 +3,49 @@
 @tailwind utilities;
 
 @layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    overflow-x: hidden;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 220 20% 98%;
+    --foreground: 228 25% 14%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 228 25% 14%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 260 50% 65%; /* #aa8be2 - primary color */
+    --popover-foreground: 228 25% 14%;
+    --primary: 260 62% 60%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 260 50% 65%;
+    --secondary: 228 24% 96%;
+    --secondary-foreground: 228 25% 20%;
+    --muted: 228 24% 96%;
+    --muted-foreground: 228 15% 40%;
+    --accent: 260 62% 60%;
     --accent-foreground: 210 40% 98%;
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 260 50% 65%;
+    --border: 228 18% 88%;
+    --input: 228 18% 88%;
+    --ring: 260 62% 60%;
     --radius: 1rem;
 
-    /* Dark Luxe-inspired system colors */
-    --system-pink: 260 50% 65%; /* #aa8be2 - primary color */
-    --system-purple: 260 50% 65%; /* #aa8be2 - primary color */
-    --system-deep-purple: 260 50% 65%; /* #aa8be2 - primary color */
-    --system-blue: 260 50% 65%; /* #aa8be2 - primary color */
-    --system-teal: 260 50% 65%; /* #aa8be2 - primary color */
+    /* Refined system colors for light theme */
+    --system-pink: 340 82% 65%;
+    --system-purple: 271 81% 56%;
+    --system-deep-purple: 260 62% 60%;
+    --system-blue: 217 91% 60%;
+    --system-teal: 172 66% 40%;
     --system-yellow: 48 96% 45%;
     --system-green: 142 71% 40%;
     --system-orange: 30 98% 45%;
@@ -71,15 +86,6 @@
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 @layer utilities {
   .font-display {
     font-weight: 700;
@@ -94,6 +100,85 @@
   .font-body {
     font-weight: 400;
     line-height: 1.6;
+  }
+
+  /* Marquee helpers */
+  .marquee {
+    position: relative;
+    overflow: hidden;
+  }
+  .marquee-track {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem; /* 20px */
+    width: max-content;
+    animation: marquee-right 28s linear infinite;
+    will-change: transform;
+  }
+
+  /* Purple/blue gradient text */
+  .text-purple-blue {
+    background: linear-gradient(90deg, #8b5cf6, #60a5fa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Animated cursors that orbit along words */
+  .cursor-float {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    animation: cursor-move 4.5s ease-in-out infinite;
+  }
+  .cursor-purple {
+    background: rgba(139, 92, 246, 0.18);
+    border: 1px solid rgba(139, 92, 246, 0.5);
+  }
+  .cursor-blue {
+    background: rgba(96, 165, 250, 0.18);
+    border: 1px solid rgba(96, 165, 250, 0.5);
+  }
+
+  .cursor-icon {
+    width: 12px;
+    height: 12px;
+    color: #8b5cf6;
+  }
+  .cursor-blue .cursor-icon {
+    color: #60a5fa;
+  }
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes cursor-move {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(8px, -6px) rotate(6deg);
+  }
+  50% {
+    transform: translate(0, -10px) rotate(0deg);
+  }
+  75% {
+    transform: translate(-8px, -6px) rotate(-6deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
   }
 }
 
@@ -134,7 +219,6 @@
 .glow {
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
 }
-
 .glow:hover {
   box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
 }
@@ -143,55 +227,42 @@
 .glow-red {
   box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
 }
-
 .glow-red:hover {
   box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
 }
-
 .glow-green {
   box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
 }
-
 .glow-green:hover {
   box-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
 }
-
 .glow-blue {
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
 }
-
 .glow-blue:hover {
   box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
 }
-
 .glow-orange {
   box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
 }
-
 .glow-orange:hover {
   box-shadow: 0 0 30px rgba(249, 115, 22, 0.5);
 }
-
 .glow-yellow {
   box-shadow: 0 0 20px rgba(234, 179, 8, 0.3);
 }
-
 .glow-yellow:hover {
   box-shadow: 0 0 30px rgba(234, 179, 8, 0.5);
 }
-
 .glow-teal {
   box-shadow: 0 0 20px rgba(20, 184, 166, 0.3);
 }
-
 .glow-teal:hover {
   box-shadow: 0 0 30px rgba(20, 184, 166, 0.5);
 }
-
 .glow-purple {
   box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
 }
-
 .glow-purple:hover {
   box-shadow: 0 0 30px rgba(147, 51, 234, 0.5);
 }
@@ -204,7 +275,6 @@
     hsl(var(--primary)) 100%
   );
 }
-
 .gradient-system {
   background: linear-gradient(
     135deg,
@@ -225,7 +295,6 @@
     hsl(var(--primary)) 100%
   );
 }
-
 .gradient-card {
   background: linear-gradient(
     135deg,
@@ -233,7 +302,6 @@
     rgba(255, 255, 255, 0.05) 100%
   );
 }
-
 .dark .gradient-card {
   background: linear-gradient(
     135deg,
@@ -250,7 +318,6 @@
     hsl(var(--primary)) 100%
   );
 }
-
 .gradient-modern {
   background: linear-gradient(
     135deg,
@@ -259,7 +326,6 @@
     hsl(var(--primary)) 100%
   );
 }
-
 .gradient-dark {
   background: linear-gradient(
     135deg,
@@ -274,7 +340,6 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
-
 .dark .glass {
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -287,7 +352,6 @@
   pointer-events: none;
   overflow: hidden;
 }
-
 .aurora span {
   position: absolute;
   width: 60vw;
@@ -297,7 +361,6 @@
   opacity: 0.18;
   mix-blend-mode: screen;
 }
-
 .aurora .aurora-1 {
   top: -10%;
   left: -10%;
@@ -308,7 +371,6 @@
   );
   animation: aurora-float-1 16s ease-in-out infinite;
 }
-
 .aurora .aurora-2 {
   bottom: -15%;
   right: -10%;
@@ -319,7 +381,6 @@
   );
   animation: aurora-float-2 18s ease-in-out infinite;
 }
-
 .aurora .aurora-3 {
   top: 10%;
   right: 20%;
@@ -330,7 +391,6 @@
   );
   animation: aurora-float-3 20s ease-in-out infinite;
 }
-
 .aurora .aurora-4 {
   bottom: 10%;
   left: 15%;
@@ -351,7 +411,6 @@
     transform: translate3d(6%, 4%, 0) scale(1.05);
   }
 }
-
 @keyframes aurora-float-2 {
   0%,
   100% {
@@ -361,7 +420,6 @@
     transform: translate3d(-5%, -6%, 0) scale(1.08);
   }
 }
-
 @keyframes aurora-float-3 {
   0%,
   100% {
@@ -371,7 +429,6 @@
     transform: translate3d(4%, -5%, 0) scale(1.03);
   }
 }
-
 @keyframes aurora-float-4 {
   0%,
   100% {
@@ -398,7 +455,6 @@
   color: transparent;
   animation: logo-shimmer-move 3s ease-in-out infinite;
 }
-
 @keyframes logo-shimmer-move {
   0% {
     background-position: 0% 50%;

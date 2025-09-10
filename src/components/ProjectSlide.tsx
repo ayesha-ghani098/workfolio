@@ -85,11 +85,41 @@ export default function ProjectSlide({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="space-y-4"
+                className="space-y-6"
               >
-                <p className="text-muted-foreground font-body leading-relaxed">
-                  {project.description || project.outcome}
-                </p>
+                {/* Problem / Approach / Outcome */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <h4 className="text-sm font-heading text-muted-foreground mb-2">
+                      Problem
+                    </h4>
+                    <p className="text-sm font-body leading-relaxed">
+                      {project.problem}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-heading text-muted-foreground mb-2">
+                      Approach
+                    </h4>
+                    <p className="text-sm font-body leading-relaxed">
+                      {project.approach}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-heading text-muted-foreground mb-2">
+                      Outcome
+                    </h4>
+                    <p className="text-sm font-body leading-relaxed">
+                      {project.outcome}
+                    </p>
+                  </div>
+                </div>
+
+                {project.description && (
+                  <p className="text-muted-foreground font-body leading-relaxed">
+                    {project.description}
+                  </p>
+                )}
 
                 {/* Tech Stack */}
                 <div className="space-y-3">
@@ -132,7 +162,7 @@ export default function ProjectSlide({
                 )}
 
                 {/* Links */}
-                <div className="flex gap-3 pt-4">
+                <div className="flex gap-3 pt-2">
                   {project.liveUrl && (
                     <Button
                       onClick={() => window.open(project.liveUrl!, "_blank")}

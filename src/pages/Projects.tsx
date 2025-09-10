@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { BookOpen, Zap, Code2, ArrowRight, Play } from "lucide-react";
+import { useMemo, useState } from "react";
+import { BookOpen, Code2, ArrowRight, Briefcase } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PageHeader, SectionHeader } from "@/components/ui/heading";
@@ -9,6 +9,8 @@ import { getMajorProjects, getSideMissions } from "@/lib/data";
 import ProjectSlide from "@/components/ProjectSlide";
 import { MajorProject } from "@/types/site-data";
 import { tw } from "@/styles/tw";
+import { useGitHubRepos } from "@/hooks/useGitHubRepos";
+import { GITHUB_CONFIG, PAGINATION } from "@/lib/constants";
 import prepmentorImg from "@/assets/prepmentor.png";
 import chaincardImg from "@/assets/chaincard.png";
 import kpibarImg from "@/assets/kpibar.png";
@@ -22,16 +24,6 @@ const imageMap: Record<string, string> = {
   whatsapp: whatsappImg,
   workfolio: workfolioImg,
 };
-
-// Preview helper types for GitHub repos
-interface RepoInfoPreview {
-  id: number;
-  name: string;
-  description: string | null;
-  html_url: string;
-  homepage?: string | null;
-  topics?: string[];
-}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -51,69 +43,48 @@ const itemVariants = {
 };
 
 export default function Projects() {
-  const majorProjects = getMajorProjects().map((p) => ({
-    ...p,
-    image: p.image || (p.imageKey ? imageMap[p.imageKey] : undefined),
-  }));
+  const majorProjects = useMemo(
+    () =>
+      getMajorProjects().map((p) => ({
+        ...p,
+        image: p.image || (p.imageKey ? imageMap[p.imageKey] : undefined),
+      })),
+    []
+  );
+
   const sideMissions = getSideMissions();
   const [selectedProject, setSelectedProject] = useState<MajorProject | null>(
     null
   );
 
-  // Load a 3-item preview from GitHub (fallback to local side missions)
-  const [preview, setPreview] = useState<
-    {
-      id: string;
-      title: string;
-      description: string;
-      liveUrl?: string;
-      githubUrl?: string;
-    }[]
-  >([]);
-  const [loadingPreview, setLoadingPreview] = useState(false);
+  // Use the GitHub hook
+  const { repos, loading: loadingPreview } = useGitHubRepos({
+    username: GITHUB_CONFIG.USERNAME,
+    excludeTopics: GITHUB_CONFIG.EXCLUDE_TOPICS,
+    perPage: GITHUB_CONFIG.PER_PAGE,
+  });
 
-  useEffect(() => {
-    const controller = new AbortController();
-    async function load() {
-      try {
-        setLoadingPreview(true);
-        const headers: Record<string, string> = {
-          Accept: "application/vnd.github+json",
-          "X-GitHub-Api-Version": "2022-11-28",
-        };
-        const res = await fetch(
-          "https://api.github.com/users/ayesha-ghani098/repos?per_page=100",
-          { headers, signal: controller.signal }
-        );
-        if (!res.ok) throw new Error(`GitHub ${res.status}`);
-        const data: RepoInfoPreview[] = await res.json();
-        const cleaned = data
-          .filter((r) => !(r.topics || []).includes("major"))
-          .slice(0, 3)
-          .map((r) => ({
-            id: String(r.id),
-            title: r.name,
-            description: r.description ?? "",
-            liveUrl: r.homepage || undefined,
-            githubUrl: r.html_url,
-          }));
-        setPreview(cleaned);
-      } catch (e) {
-        const fallback = sideMissions.slice(0, 3).map((m) => ({
-          id: m.id,
-          title: m.title,
-          description: m.description,
-          liveUrl: (m as any).liveUrl,
-          githubUrl: (m as any).githubUrl,
-        }));
-        setPreview(fallback);
-      } finally {
-        setLoadingPreview(false);
-      }
+  // Transform GitHub repos to preview format
+  const preview = useMemo(() => {
+    if (repos && repos.length > 0) {
+      return repos.slice(0, 3).map((r) => ({
+        id: String(r.id),
+        title: r.name,
+        description: r.description ?? "",
+        liveUrl: r.homepage || undefined,
+        githubUrl: r.html_url,
+      }));
     }
-    load();
-    return () => controller.abort();
-  }, [sideMissions]);
+
+    // Fallback to local side missions
+    return sideMissions.slice(0, 3).map((m) => ({
+      id: m.id,
+      title: m.title,
+      description: m.description,
+      liveUrl: (m as any).liveUrl,
+      githubUrl: (m as any).githubUrl,
+    }));
+  }, [repos, sideMissions]);
 
   return (
     <>
@@ -132,110 +103,46 @@ export default function Projects() {
         <div className={`${tw.container} ${tw.section} relative z-10`}>
           {/* Header */}
           <PageHeader
-            title="Quest Log"
+            title="My Projects"
             subtitle="Major quests completed and side missions accomplished in my journey as a software engineer"
             icon={<BookOpen className="w-8 h-8 text-primary" />}
           />
 
-          {/* Major Projects */}
+          {/* Major Projects - redesigned list */}
           <motion.section variants={itemVariants} className="mb-20">
-            <SectionHeader
-              title="Major Quests"
-              icon={<Zap className="w-6 h-6 text-primary" />}
-            />
-
-            <div className="grid gap-6 md:gap-8">
-              {majorProjects.map((project) => (
-                <motion.div
-                  key={project.id}
-                  variants={itemVariants}
-                  className="group cursor-pointer"
-                  onClick={() => setSelectedProject(project)}
+            <div className="divide-y divide-border/60">
+              {majorProjects.map((p) => (
+                <div
+                  key={p.id}
+                  className="py-8 md:py-12 flex flex-col md:flex-row md:items-start md:justify-between gap-4 group"
                 >
-                  <Card
-                    className={`overflow-hidden hover:shadow-2xl transition-all duration-500 ${tw.cardBorder} bg-card backdrop-blur-none transform-gpu group-hover:scale-[1.02]`}
-                  >
-                    <CardHeader className={tw.cardHeaderLg}>
-                      <div className="flex flex-col gap-4">
-                        {/* Title and Tech */}
-                        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                          <div className="flex-1">
-                            <CardTitle className="text-xl md:text-2xl text-primary font-heading mb-2">
-                              {project.title}
-                            </CardTitle>
-                            <p className={tw.body}>{project.company}</p>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <div className="flex flex-wrap gap-2">
-                              {project.technologies.slice(0, 3).map((tech) => (
-                                <span key={tech} className={tw.techChipLg}>
-                                  {tech}
-                                </span>
-                              ))}
-                              {project.technologies.length > 3 && (
-                                <span className="px-3 py-1 bg-muted text-muted-foreground text-xs rounded-full">
-                                  +{project.technologies.length - 3}
-                                </span>
-                              )}
-                            </div>
-                            <Button className={tw.iconBtnSm}>
-                              <Play className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </CardHeader>
-
-                    <CardContent className="p-6">
-                      {/* Four columns: Image, Problem, Approach, Outcome */}
-                      <div className="grid md:grid-cols-4 gap-6 mb-0 items-start">
-                        <div className="flex items-start justify-center md:justify-start">
-                          {project.image && (
-                            <img
-                              src={project.image}
-                              alt={project.title}
-                              className="w-[268px] h-[168px] rounded-md object-cover"
-                            />
-                          )}
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-sm text-muted-foreground mb-2 font-heading">
-                            Problem
-                          </h4>
-                          <p className="text-sm font-body leading-relaxed">
-                            {project.problem}
-                          </p>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-sm text-muted-foreground mb-2 font-heading">
-                            Approach
-                          </h4>
-                          <p className="text-sm font-body leading-relaxed">
-                            {project.approach}
-                          </p>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-sm text-muted-foreground mb-2 font-heading">
-                            Outcome
-                          </h4>
-                          <p className="text-sm font-body leading-relaxed">
-                            {project.outcome}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Click to view more */}
-                      <div className="mt-6 flex items-center justify-center">
-                        <Button
-                          onClick={() => setSelectedProject(project)}
-                          className="px-4 py-2 bg-primary text-primary-foreground hover:opacity-90"
-                        >
-                          View details
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
+                  {/* Left: Title + meta */}
+                  <div>
+                    <button
+                      onClick={() => setSelectedProject(p)}
+                      className="text-3xl md:text-5xl font-display leading-none text-foreground text-left transition-all duration-300 ease-out group-hover:tracking-tight hover:text-primary group-hover:scale-[1.01]"
+                    >
+                      {p.title}
+                    </button>
+                    <p className="mt-3 text-sm text-muted-foreground transition-all duration-300 group-hover:translate-x-1">
+                      {new Date().getFullYear()}
+                    </p>
+                  </div>
+                  {/* Right: Role + tech */}
+                  <div className="flex items-start gap-4 md:min-w-[320px] justify-end">
+                    <div className="hidden md:flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 text-primary shrink-0">
+                      <Briefcase className="w-6 h-6" />
+                    </div>
+                    <div className="text-right transition-all duration-300 group-hover:translate-x-1">
+                      <p className="text-base md:text-lg font-heading">
+                        {p.company || p.tags?.[0] || "Design & Development"}
+                      </p>
+                      <p className="text-xs md:text-sm text-muted-foreground mt-1">
+                        {(p.technologies || []).slice(0, 6).join(", ")}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           </motion.section>

@@ -16,4 +16,11 @@ export default defineConfig({
   esbuild: {
     drop: ["console", "debugger"],
   },
+    server: {
+      headers: {
+        'Content-Security-Policy': "frame-ancestors 'self' https://trusted.example",
+        'X-Frame-Options': 'SAMEORIGIN',
+      },
+    },
+  
 }) 

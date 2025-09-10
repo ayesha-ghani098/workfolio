@@ -1,64 +1,23 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { PageHeader, SectionHeader } from "@/components/ui/heading";
 import { getSideMissions } from "@/lib/data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Github } from "lucide-react";
-
-interface RepoInfo {
-  id: number;
-  name: string;
-  description: string | null;
-  html_url: string;
-  homepage?: string | null;
-  topics?: string[];
-}
-
-const PAGE_SIZE = 6;
+import { useGitHubRepos } from "@/hooks/useGitHubRepos";
+import { GITHUB_CONFIG, PAGINATION } from "@/lib/constants";
 
 export default function SideMissions() {
   const local = getSideMissions();
-  const [repos, setRepos] = useState<RepoInfo[] | null>(null);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const controller = new AbortController();
-    async function load() {
-      try {
-        setLoading(true);
-        const headers: Record<string, string> = {
-          Accept: "application/vnd.github+json",
-          "X-GitHub-Api-Version": "2022-11-28",
-        };
-        const res = await fetch(
-          "https://api.github.com/users/ayesha-ghani098/repos?per_page=100",
-          { headers, signal: controller.signal }
-        );
-        if (!res.ok) throw new Error(`GitHub ${res.status}`);
-        const data: any[] = await res.json();
-        const cleaned: RepoInfo[] = data
-          .map((r) => ({
-            id: r.id,
-            name: r.name,
-            description: r.description,
-            html_url: r.html_url,
-            homepage: r.homepage,
-            topics: r.topics as string[] | undefined,
-          }))
-          .filter((r) => !(r.topics || []).includes("major"));
-        setRepos(cleaned);
-      } catch (e) {
-        console.warn("GitHub fetch failed, using local sideMissions");
-        setRepos(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-    load();
-    return () => controller.abort();
-  }, []);
+  // Use the GitHub hook
+  const { repos, loading } = useGitHubRepos({
+    username: GITHUB_CONFIG.USERNAME,
+    excludeTopics: GITHUB_CONFIG.EXCLUDE_TOPICS,
+    perPage: GITHUB_CONFIG.PER_PAGE,
+  });
 
   const items = useMemo(() => {
     if (repos && repos.length > 0) {
@@ -70,6 +29,8 @@ export default function SideMissions() {
         githubUrl: r.html_url,
       }));
     }
+
+    // Fallback to local side missions
     return local.map((m) => ({
       id: m.id,
       title: m.title,
@@ -79,9 +40,12 @@ export default function SideMissions() {
     }));
   }, [repos, local]);
 
-  const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
-  const start = (page - 1) * PAGE_SIZE;
-  const pageItems = items.slice(start, start + PAGE_SIZE);
+  const totalPages = Math.max(
+    1,
+    Math.ceil(items.length / PAGINATION.PAGE_SIZE)
+  );
+  const start = (page - 1) * PAGINATION.PAGE_SIZE;
+  const pageItems = items.slice(start, start + PAGINATION.PAGE_SIZE);
 
   return (
     <motion.div

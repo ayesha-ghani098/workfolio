@@ -1,4 +1,4 @@
-# AG.Workfolio - Project Structure & Documentation
+# Workfolio - Project Structure & Documentation
 
 ## 🏗️ Project Overview
 
