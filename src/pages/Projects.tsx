@@ -43,24 +43,16 @@ const itemVariants = {
 };
 
 export default function Projects() {
-  const majorProjects = useMemo(
-    () =>
-      getMajorProjects().map((p) => ({
-        ...p,
-        image: p.image || (p.imageKey ? imageMap[p.imageKey] : undefined),
-      })),
-    []
-  );
-
+  const majorProjects = useMemo(() => getMajorProjects(), []);
   const sideMissions = getSideMissions();
   const [selectedProject, setSelectedProject] = useState<MajorProject | null>(
     null
   );
 
-  // Use the GitHub hook
+  // Use the GitHub hook with stable references
   const { repos, loading: loadingPreview } = useGitHubRepos({
     username: GITHUB_CONFIG.USERNAME,
-    excludeTopics: [...GITHUB_CONFIG.EXCLUDE_TOPICS],
+    excludeTopics: GITHUB_CONFIG.EXCLUDE_TOPICS,
     perPage: GITHUB_CONFIG.PER_PAGE,
   });
 
