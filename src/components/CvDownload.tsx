@@ -16,7 +16,7 @@ export default function CvDownload({
 }: CvDownloadProps) {
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [cvEmail, setCvEmail] = useState("");
-  const [sending, setSending] = useState(false);
+  // const [sending, setSending] = useState(false);
   const contact = getContact();
   const cvDropdownRef = useRef<HTMLDivElement | null>(null);
 
@@ -48,13 +48,13 @@ export default function CvDownload({
 
   const handleDownload = async () => {
     if (!contact.cvUrl || !cvEmail.trim()) return;
-    setSending(true);
+    // setSending(true);
     try {
       // Fire-and-forget email sending; still proceed to download immediately
       void sendCvPasswordEmail(cvEmail.trim()).catch(() => {});
       triggerDownload();
     } finally {
-      setSending(false);
+      // setSending(false);
       setIsCvOpen(false);
     }
   };
