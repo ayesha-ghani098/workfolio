@@ -15,7 +15,7 @@ export default function SideMissions() {
   // Use the GitHub hook
   const { repos, loading } = useGitHubRepos({
     username: GITHUB_CONFIG.USERNAME,
-    excludeTopics: [...GITHUB_CONFIG.EXCLUDE_TOPICS],
+    excludeTopics: GITHUB_CONFIG.EXCLUDE_TOPICS,
     perPage: GITHUB_CONFIG.PER_PAGE,
   });
 

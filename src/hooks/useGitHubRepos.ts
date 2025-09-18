@@ -11,7 +11,7 @@ interface RepoInfo {
 
 interface UseGitHubReposOptions {
   username: string;
-  excludeTopics?: string[];
+  excludeTopics?: readonly string[];
   perPage?: number;
 }
 
