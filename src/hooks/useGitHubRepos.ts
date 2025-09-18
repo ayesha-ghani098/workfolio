@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 interface RepoInfo {
   id: number;
@@ -11,7 +11,7 @@ interface RepoInfo {
 
 interface UseGitHubReposOptions {
   username: string;
-  excludeTopics?: readonly string[];
+  excludeTopics?: string[];
   perPage?: number;
 }
 
@@ -20,10 +20,6 @@ interface UseGitHubReposReturn {
   loading: boolean;
   error: string | null;
 }
-
-// Cache to prevent duplicate requests
-const requestCache = new Map<string, { data: RepoInfo[]; timestamp: number }>();
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 export const useGitHubRepos = ({
   username,
@@ -34,44 +30,37 @@ export const useGitHubRepos = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Memoize the cache key to prevent unnecessary re-renders
-  const cacheKey = useMemo(() => 
-    `${username}-${perPage}-${excludeTopics.join(',')}`, 
-    [username, perPage, excludeTopics]
-  );
-
   useEffect(() => {
     const controller = new AbortController();
+    
+    // Set timeout using AbortController
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
     
     async function load() {
       try {
         setLoading(true);
         setError(null);
         
-        const cached = requestCache.get(cacheKey);
-        
-        // Check if we have valid cached data
-        if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-          setRepos(cached.data);
-          setLoading(false);
-          return;
-        }
-        
         const headers: Record<string, string> = {
           Accept: "application/vnd.github+json",
           "X-GitHub-Api-Version": "2022-11-28",
         };
         
-        // Add GitHub token if available
+        // Add GitHub token if available for higher rate limits
         const githubToken = import.meta.env.VITE_GITHUB_TOKEN;
         if (githubToken) {
           headers.Authorization = `Bearer ${githubToken}`;
         }
         
         const res = await fetch(
-          `https://api.github.com/users/${username}/repos?per_page=${perPage}&sort=updated`,
-          { headers, signal: controller.signal }
+          `https://api.github.com/users/${username}/repos?per_page=${perPage}`,
+          { 
+            headers, 
+            signal: controller.signal
+          }
         );
+        
+        clearTimeout(timeoutId);
         
         if (!res.ok) {
           if (res.status === 403) {
@@ -90,14 +79,16 @@ export const useGitHubRepos = ({
           return !excludeTopics.some((topic) => repoTopics.includes(topic));
         });
         
-        // Cache the filtered results
-        requestCache.set(cacheKey, { data: filtered, timestamp: Date.now() });
-        
         setRepos(filtered);
       } catch (err) {
+        clearTimeout(timeoutId);
         if (err instanceof Error && err.name !== 'AbortError') {
           console.warn("GitHub fetch failed:", err.message);
-          setError(err.message);
+          if (err.message.includes('timeout') || err.message.includes('ERR_CONNECTION_TIMED_OUT')) {
+            setError("Connection timeout. Please check your internet connection and try again.");
+          } else {
+            setError(err.message);
+          }
         }
       } finally {
         setLoading(false);
@@ -105,8 +96,11 @@ export const useGitHubRepos = ({
     }
     
     load();
-    return () => controller.abort();
-  }, [cacheKey, username, excludeTopics, perPage]);
+    return () => {
+      clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [username, excludeTopics, perPage]);
 
   return { repos, loading, error };
 }; 

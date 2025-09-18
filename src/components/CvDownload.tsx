@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { X } from "lucide-react";
+import { X, Construction } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { getContact } from "@/lib/data";
@@ -66,9 +66,13 @@ export default function CvDownload({
       <Button
         size="sm"
         variant="outline"
-        className={isMobile ? "w-full" : "hidden sm:inline-flex"}
+        className={`${
+          isMobile ? "w-full" : "hidden sm:inline-flex"
+        } opacity-50 cursor-not-allowed`}
         onClick={() => setIsCvOpen((v) => !v)}
+        disabled
       >
+        <Construction className="w-4 h-4 mr-2" />
         Download CV
       </Button>
       {isCvOpen && (
@@ -78,7 +82,7 @@ export default function CvDownload({
           } rounded-lg border bg-background p-4 shadow-lg`}
         >
           <div className="flex items-start justify-between">
-            <label className="text-sm font-medium">Email</label>
+            <label className="text-sm font-medium">Under Construction</label>
             <button
               aria-label="Close"
               className="text-muted-foreground hover:text-foreground"
@@ -93,18 +97,20 @@ export default function CvDownload({
               placeholder="you@example.com"
               value={cvEmail}
               onChange={(e) => setCvEmail(e.target.value)}
+              disabled
             />
           </div>
           <p className="mt-2 text-xs text-muted-foreground">
-            Download CV. Password will be sent to your email.
+            CV download is currently under construction. Please check back
+            later.
           </p>
           <div className="mt-4 flex justify-end">
             <Button
               className={isMobile ? "w-full" : ""}
               onClick={handleDownload}
-              disabled={sending || !cvEmail.trim()}
+              disabled
             >
-              {sending ? "Processing..." : "Download"}
+              Under Construction
             </Button>
           </div>
         </div>

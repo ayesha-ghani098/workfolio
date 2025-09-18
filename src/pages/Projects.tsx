@@ -17,14 +17,6 @@ import kpibarImg from "@/assets/kpibar.png";
 import whatsappImg from "@/assets/whatsapp.png";
 import workfolioImg from "@/assets/workfolio.png";
 
-const imageMap: Record<string, string> = {
-  prepmentor: prepmentorImg,
-  chaincard: chaincardImg,
-  kpibar: kpibarImg,
-  whatsapp: whatsappImg,
-  workfolio: workfolioImg,
-};
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -42,17 +34,32 @@ const itemVariants = {
   },
 };
 
+const imageMap: Record<string, string> = {
+  prepmentor: prepmentorImg,
+  chaincard: chaincardImg,
+  kpibar: kpibarImg,
+  whatsapp: whatsappImg,
+  workfolio: workfolioImg,
+};
+
 export default function Projects() {
-  const majorProjects = useMemo(() => getMajorProjects(), []);
+  const majorProjects = useMemo(
+    () =>
+      getMajorProjects().map((p) => ({
+        ...p,
+        image: p.image || (p.imageKey ? imageMap[p.imageKey] : undefined),
+      })),
+    []
+  );
   const sideMissions = getSideMissions();
   const [selectedProject, setSelectedProject] = useState<MajorProject | null>(
     null
   );
 
-  // Use the GitHub hook with stable references
+  // Use the GitHub hook
   const { repos, loading: loadingPreview } = useGitHubRepos({
     username: GITHUB_CONFIG.USERNAME,
-    excludeTopics: GITHUB_CONFIG.EXCLUDE_TOPICS,
+    excludeTopics: [...GITHUB_CONFIG.EXCLUDE_TOPICS],
     perPage: GITHUB_CONFIG.PER_PAGE,
   });
 
